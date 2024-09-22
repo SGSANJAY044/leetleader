@@ -1,10 +1,10 @@
 import {Image,StyleSheet,Text,View} from 'react-native'
 
-export default function Card() {
+export default function Card({name,roll}) {
   return (
     <View style={styles.card}>
         <View style={styles.cardView}>
-            <Text style={{fontSize:20,fontWeight:600,color:'white'}}>SANJAY 21ADR044</Text>
+            <Text style={{fontSize:20,fontWeight:600,color:'white'}}>{name} {roll}</Text>
             <View style={{gap:4,width:'80%'}}>
                 <View style={{flexDirection:'row',alignItems:'center', gap:30}}>
                     <Text style={{color:'white'}}>Easy</Text>
