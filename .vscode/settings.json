@@ -1,0 +1,8 @@
+{
+  "conventionalCommits.scopes": [
+    "leaderboard",
+    "schedule",
+    "analysis",
+    "profile"
+  ]
+}
