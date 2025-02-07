@@ -34,7 +34,7 @@ export default function analysis() {
 
 const styles=StyleSheet.create({
   body:{
-    marginTop:40,
+    marginTop:20,
     padding:20,
   },
   submission:{

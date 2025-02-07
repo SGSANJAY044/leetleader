@@ -1,6 +1,6 @@
 import {Image,StyleSheet,Text,View} from 'react-native'
 
-export default function Card({name,roll}) {
+export default function Card({name,roll,easy,medium,hard}) {
   return (
     <View style={styles.card}>
         <View style={styles.cardView}>
@@ -8,15 +8,15 @@ export default function Card({name,roll}) {
             <View style={{gap:4,width:'80%'}}>
                 <View style={{flexDirection:'row',alignItems:'center', gap:30}}>
                     <Text style={{color:'white'}}>Easy</Text>
-                    <View style={{height:5,borderRadius:30,width:"70%",backgroundColor:'white'}}/>
+                    <View style={{ height:5,borderRadius:30 ,width:`${(easy/212)*100}`, backgroundColor:'white'}}/>
                 </View>
                  <View style={{flexDirection:'row',alignItems:'center', gap:10}}>
                     <Text style={{color:'white'}}>Medium</Text>
-                    <View style={{height:5,borderRadius:30,width:"90%",backgroundColor:'white'}}/>
+                    <View style={{height:5,borderRadius:30 ,width:`${(medium/233)*100}`,backgroundColor:'white'}}/>
                 </View>
                  <View style={{flexDirection:'row',alignItems:'center', gap:30}}>
                     <Text style={{color:'white'}}>Hard</Text>
-                    <View style={{height:5,borderRadius:30,width:"40%",backgroundColor:'white'}}/>
+                    <View style={{height:5,borderRadius:30 , width:`${(hard/10)*100}`,backgroundColor:'white'}}/>
                 </View>
             </View>
         </View>
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     flexDirection:'column',
     width:'70%',
     padding:10,
-    gap:2
+    gap:5
   },
   cardImage:{
     height:110,
