@@ -3,12 +3,15 @@ import { Shadow } from 'react-native-shadow-2';
 export default function LeetBoard({rank,name,roll,total}) {
   return (
     <View style={styles.card}>
-        <View style={{flexDirection:'row',gap:20,alignItems:'center'}}>
+        <View style={{flexDirection:'row',gap:10,alignItems:'center'}}>
         <View style={{backgroundColor:'#EBA340',padding:10,borderRadius:10,flexDirection:'row',alignItems:'center',justifyContent:'center',gap:5,width:65}}>
             <Text style={{fontSize:20,fontWeight:500,color:'white'}}>{rank}</Text>
             {rank<=3 && <Image style={styles.cardImage} source={require('@/assets/images/logo.png')} />}
         </View>
-        <Text style={{fontSize:20,fontWeight:400,color:'gray'}}>{name} {roll}</Text>
+        <View style={{ flexDirection:'row',gap:5}}>
+        <Text style={{fontSize:20,fontWeight:400,color:'gray',maxWidth: 100}}  numberOfLines={1} ellipsizeMode="tail">{name}</Text>
+        <Text style={{fontSize:20,fontWeight:400,color:'gray'}}>{roll}</Text>
+        </View>
         </View>
         <Text style={{fontSize:20,fontWeight:600,color:'#EBA340'}}>{total}</Text>
     </View>
