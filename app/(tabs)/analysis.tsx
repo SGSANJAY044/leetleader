@@ -1,20 +1,47 @@
-import { Image, StyleSheet, Text,Platform, View } from 'react-native';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import {ScrollView, StyleSheet, Text,Platform, View } from 'react-native';
 
+interface Submissions {
+  title: string;
+  titleSlug: string;
+  timestamp: string;
+  statusDisplay: string;
+  lamg: string;
+}
 
 export default function analysis() {
+  const [submissions,setSubmissions]=useState(useState<Submissions[] | null>(null))
+  useEffect(() => {
+    const fetchSubmissions = async () => {
+      try {
+        const response = await axios.get('https://f776-121-242-155-238.ngrok-free.app/students/submissions/fjzzq2002'); 
+        if (!response) {
+          throw new Error('Network response was not ok');
+        }
+        setSubmissions(response.data.submission);
+      } catch (error) {
+        console.error('Error fetching Student submissions:', error);
+      }
+    };
+    fetchSubmissions();
+  }, []);
+  
+  console.log(submissions);
   return (
     <View style={styles.body}>
       <View style={{height:"45%"}}></View>
       <View style={styles.submission}>
         <Text style={{fontSize:15,fontWeight:600,color:'#EBA340',marginBottom:20}}>Recent Submissions</Text>
+        <ScrollView style={{overflowY: 'scroll',}} showsVerticalScrollIndicator={false}  >
         <View style={{gap:10}}>
-          {Array.from({ length: 8 }, (_, i) => i + 1).map((index)=>
-          <View>
+          {submissions.map((submission,index)=>
+          <View key={index}>
           <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center',marginBottom:10}}>
-            <Text style={{fontSize:20,fontWeight:400,color:'gray'}}>Submission  Question</Text>
+            <Text style={{fontSize:18,fontWeight:400,color:'gray',width: 200}}  numberOfLines={1} ellipsizeMode="tail">{submission?.title}</Text>
             <View style={{flexDirection:'row',alignItems:'center',gap:5}}>
-              <View style={{height:5,width:5,backgroundColor:'#52E14B',borderRadius:20,marginTop:2}}/>
-              <Text style={{color:'#52E14B'}}>complete run</Text>
+              <View style={{height:5,width:5,backgroundColor:`${submission?.statusDisplay!='Accepted'?'#FF0000':'#52E14B'}`,borderRadius:20,marginTop:2}}/>
+              <Text style={{color:`${submission?.statusDisplay!='Accepted'?'#FF0000':'#52E14B'}`}}>{submission?.statusDisplay}</Text>
             </View>
           </View>
           {index!==8 && <View
@@ -27,6 +54,7 @@ export default function analysis() {
           </View>
           )}
         </View>
+        </ScrollView>
       </View>
     </View>
   )
@@ -40,6 +68,7 @@ const styles=StyleSheet.create({
   submission:{
     backgroundColor:'white',
     padding:15,
+    height: 380,
     borderRadius:10
   }
 })
