@@ -15,7 +15,7 @@ export default function analysis() {
   useEffect(() => {
     const fetchSubmissions = async () => {
       try {
-        const response = await axios.get('https://f776-121-242-155-238.ngrok-free.app/students/submissions/fjzzq2002'); 
+        const response = await axios.get('https://6e38-183-82-247-142.ngrok-free.app/students/submissions/fjzzq2002'); 
         if (!response) {
           throw new Error('Network response was not ok');
         }
@@ -27,7 +27,6 @@ export default function analysis() {
     fetchSubmissions();
   }, []);
   
-  console.log(submissions);
   return (
     <View style={styles.body}>
       <View style={{height:"45%"}}></View>

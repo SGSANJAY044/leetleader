@@ -5,7 +5,8 @@ import Card from '@/components/Pages/Home/Card';
 import LeetBoard from '@/components/Pages/Home/LeetBoard';
 import { Shadow } from 'react-native-shadow-2';
 import { router } from 'expo-router';
-
+import { useDispatch } from 'react-redux';
+import { setUser } from '@/redux/slices/userSlice';
 interface StudentData {
   StudentID: number;
   Streak: number;
@@ -25,14 +26,15 @@ interface StudentData {
 export default function HomeScreen() {
   const [studentData, setStudentData] = useState<StudentData | null>(null);
   const [classStudentsData, setClassStudentsData] = useState<StudentData[] | null>(null);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
-        const response = await axios.get('https://f776-121-242-155-238.ngrok-free.app/students/21ADR044');
+        const response = await axios.get('https://6e38-183-82-247-142.ngrok-free.app/students/21ADR044');
         if (!response) {
           throw new Error('Network response was not ok');
         }
+        dispatch(setUser(response.data.data));
         setStudentData(response.data.data);
       } catch (error) {
         console.error('Error fetching student data:', error);
@@ -41,8 +43,7 @@ export default function HomeScreen() {
 
     const fetchClassStudentsData = async () => {
       try {
-        const response = await axios.get('https://f776-121-242-155-238.ngrok-free.app/students/class/101');
-        console.log(response.data.students);
+        const response = await axios.get('https://6e38-183-82-247-142.ngrok-free.app/students/class/101');
         
         if (!response) {
           throw new Error('Network response was not ok');
