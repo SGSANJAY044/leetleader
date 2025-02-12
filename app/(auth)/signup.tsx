@@ -9,7 +9,7 @@ export default function Signup() {
 
   const handleSignup = async() => {
     try {
-      await axios.post('https://6e38-183-82-247-142.ngrok-free.app/auth/student/signup',{mail,password});
+      await axios.post('https://59bc-183-82-247-142.ngrok-free.app/auth/student/signup',{mail,password});
     } catch (error) {
       console.error('Signup failed:', error);
       return false;

@@ -15,7 +15,7 @@ export default function analysis() {
   useEffect(() => {
     const fetchSubmissions = async () => {
       try {
-        const response = await axios.get('https://6e38-183-82-247-142.ngrok-free.app/students/submissions/fjzzq2002'); 
+        const response = await axios.get('https://59bc-183-82-247-142.ngrok-free.app/students/submissions/fjzzq2002'); 
         if (!response) {
           throw new Error('Network response was not ok');
         }

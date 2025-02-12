@@ -14,10 +14,25 @@ export default function settings() {
   const [phone, setPhone] = useState(user?.Phone);
   const [mail, setMail] = useState(user?.Mail);
 
+  const allowedValues = ['CSE', 'IT', 'ECE', 'EEE']; // Add your department codes
+  const departmentMap: { [key: string]: number } = {
+    'CSE': 1,
+    'IT': 2,
+    'ECE': 3,
+    'EEE': 4
+  };
+
+  const classMap: { [key: string]: number } = {
+    'A': 101,
+    'B': 102,
+    'C': 103,
+    // Add other classes as needed
+  };
+
   const handleEdit = async () => {
     if (isEditing) {
       try {
-        const response = await axios.put(`https://6e38-183-82-247-142.ngrok-free.app/students/${mail}`, {
+        const response = await axios.put(`https://59bc-183-82-247-142.ngrok-free.app/students/${mail}`, {
           name,
           roll: rollNo,
           department_id: 2,
@@ -36,8 +51,17 @@ export default function settings() {
     }
   };
 
-  console.log(user);
-  
+  const handleDepartmentChange = (value: string) => {
+    const inputValue = value.toUpperCase();
+    if (allowedValues.includes(inputValue) || inputValue === "") {
+      setDepartment(departmentMap[inputValue] || null);
+    }
+  };
+
+  const handleClassChange = (value: string) => {
+    const inputValue = value.toUpperCase();
+    setClassName(classMap[inputValue] || null);
+  };
   
   return (
     <View style={styles.body}>
@@ -78,9 +102,9 @@ export default function settings() {
             selectTextOnFocus={isEditing} 
             style={styles.input}
             placeholder="Department"
-            value={department}
-            onChangeText={setDepartment}
-            autoCapitalize="words"
+            value={Object.keys(departmentMap).find(key => departmentMap[key] === department) || ''}
+            onChangeText={handleDepartmentChange}
+            autoCapitalize="characters"
           />
         </View>
         <View style={styles.inputContainer}>
@@ -90,8 +114,8 @@ export default function settings() {
             selectTextOnFocus={isEditing} 
             style={styles.input}
             placeholder="Class"
-            value={className}
-            onChangeText={setClassName}
+            value={Object.keys(classMap).find(key => classMap[key] === className) || ''}
+            onChangeText={handleClassChange}
             autoCapitalize="characters"
           />
         </View>
@@ -110,8 +134,8 @@ export default function settings() {
         <View style={styles.inputContainer}>
           <MaterialIcons name="email" size={24} color="#EBA340" />
           <TextInput
-            editable={isEditing}
-            selectTextOnFocus={isEditing} 
+            editable={false}
+            selectTextOnFocus={false} 
             style={styles.input}
             placeholder="Email"
             value={mail}
