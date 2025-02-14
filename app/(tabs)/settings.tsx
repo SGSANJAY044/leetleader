@@ -32,7 +32,7 @@ export default function settings() {
   const handleEdit = async () => {
     if (isEditing) {
       try {
-        const response = await axios.put(`https://59bc-183-82-247-142.ngrok-free.app/students/${mail}`, {
+        const response = await axios.put(`https://00c7-2409-40f4-26-51a1-9cf4-1f2f-73e3-254.ngrok-free.app/students/${mail}`, {
           name,
           roll: rollNo,
           department_id: 2,
