@@ -8,6 +8,7 @@ import TaskCard from '@/components/Pages/Schedule/TaskCard';
 export default function schedule() {
 
   const [todayTasks, setTodayTasks] = useState<any[]>([]);
+  const [friendsTasks, setFriendsTasks] = useState<any[]>([]);
   const user = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
@@ -23,12 +24,24 @@ export default function schedule() {
       }
     };
 
+    const fetchFriendsTasks = async () => {
+      try {
+        const response = await axios.get(`https://00c7-2409-40f4-26-51a1-9cf4-1f2f-73e3-254.ngrok-free.app/students/friends/${user?.StudentID}`);
+        if (!response) {
+          throw new Error('Network response was not ok');
+        }
+        setFriendsTasks(response.data.questions);
+      } catch (error) {
+        console.error('Error fetching friends\' tasks:', error);
+      }
+    };
+
     if (user?.StudentID) {
       fetchTodayTasks();
+      fetchFriendsTasks();
     }
   }, [user?.StudentID]);
 
-  console.log(todayTasks);
 
   return (
     <ScrollView>
@@ -36,13 +49,13 @@ export default function schedule() {
     <View>
       <Text style={{fontSize:20,fontWeight:600,color:'#EBA340',marginBottom:20}}>TODAY LEET TASKS</Text>
       <View style={{gap:20}}>
-              {todayTasks.map((task,index)=><TaskCard number={task.QuestionID} question={task.QuestionTitle} type={task.Difficulty} finished={true}/>)}
+              {todayTasks.map((task,index)=><TaskCard key={index} number={task.QuestionID} question={task.QuestionTitle} type={task.Difficulty} finished={true}/>)}
       </View>
     </View>
     <View style={{paddingBottom:20}}>
       <Text style={{fontSize:20,fontWeight:600,color:'#EBA340',marginBottom:20}}>FRIENDS QUESTIONS</Text>
       <View style={{gap:20}}>
-              {Array.from({ length: 5 }, (_, i) => i + 1).map((index)=><TaskCard number={82} question="ADD TWO NUMBERS" type="Hard" finished={true}/>)}
+              {friendsTasks.map((task,index)=><TaskCard key={index} number={task.QuestionID} question={task.QuestionTitle} type={task.Difficulty} finished={true}/>)}
       </View>
     </View>
     </View>
