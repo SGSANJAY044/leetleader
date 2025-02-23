@@ -7,7 +7,6 @@ import { RootState } from '@/redux/store';
 import TaskCard from '@/components/Pages/Schedule/TaskCard';
 import Loading from '@/components/Pages/loading';
 export default function schedule() {
-
   const [todayTasks, setTodayTasks] = useState(null);
   const [friendsTasks, setFriendsTasks] = useState(null);
   const user = useSelector((state: RootState) => state.user.user);
@@ -48,18 +47,18 @@ export default function schedule() {
     todayTasks && friendsTasks ? (
     <ScrollView>
    <View style={styles.body}>
-    <View>
-      <Text style={{fontSize:20,fontWeight:600,color:'#EBA340',marginBottom:20}}>TODAY LEET TASKS</Text>
+   { todayTasks.length > 0 && <View>
+    <Text style={{fontSize:20,fontWeight:600,color:'#EBA340',marginBottom:20}}>TODAY LEET TASKS</Text>
       <View style={{gap:20}}>
               {todayTasks.map((task,index)=><TaskCard key={index} number={task.QuestionID} question={task.QuestionTitle} type={task.Difficulty} finished={true}/>)}
       </View>
-    </View>
-    <View style={{paddingBottom:20}}>
+    </View> }
+    { friendsTasks.length > 0 && <View style={{paddingBottom:20}}>
       <Text style={{fontSize:20,fontWeight:600,color:'#EBA340',marginBottom:20}}>FRIENDS QUESTIONS</Text>
       <View style={{gap:20}}>
               {friendsTasks.map((task,index)=><TaskCard key={index} number={task.QuestionID} question={task.QuestionTitle} type={task.Difficulty} finished={true}/>)}
       </View>
-    </View>
+    </View>}
     </View>
     </ScrollView>
     ) : (
