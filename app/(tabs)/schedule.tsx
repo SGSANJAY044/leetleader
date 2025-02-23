@@ -42,7 +42,8 @@ export default function schedule() {
     }
   }, [user?.StudentID]);
 
-
+ console.log(todayTasks);
+ console.log(friendsTasks);
   return (
     todayTasks && friendsTasks ? (
     <ScrollView>

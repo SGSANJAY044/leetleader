@@ -2,16 +2,13 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import {ScrollView, StyleSheet, Text,Platform, View } from 'react-native';
 import Loading from '@/components/Pages/loading';
-interface Submissions {
-  title: string;
-  titleSlug: string;
-  timestamp: string;
-  statusDisplay: string;
-  lamg: string;
-}
+import ProblemSolvingStats from '@/components/Pages/Analysis/Chart';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 export default function analysis() {
   const [submissions,setSubmissions]=useState(null)
+  const user = useSelector((state: RootState) => state.user.user);
   useEffect(() => {
     const fetchSubmissions = async () => {
       try {
@@ -30,7 +27,9 @@ export default function analysis() {
   return (
     submissions ?
     <View style={styles.body}>
-      <View style={{height:"45%"}}></View>
+      <View style={{height:"45%"}}>
+        <ProblemSolvingStats solvedEasy={user?.SolvedEasy || 0} solvedMedium={user?.SolvedMedium || 0} solvedHard={user?.SolvedHard || 0} />
+      </View>
       <View style={styles.submission}>
         <Text style={{fontSize:15,fontWeight:600,color:'#EBA340',marginBottom:20}}>Recent Submissions</Text>
         <ScrollView style={{overflowY: 'scroll',}} showsVerticalScrollIndicator={false}  >
