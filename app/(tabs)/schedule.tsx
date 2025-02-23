@@ -5,16 +5,17 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import TaskCard from '@/components/Pages/Schedule/TaskCard';
+import Loading from '@/components/Pages/loading';
 export default function schedule() {
 
-  const [todayTasks, setTodayTasks] = useState<any[]>([]);
-  const [friendsTasks, setFriendsTasks] = useState<any[]>([]);
+  const [todayTasks, setTodayTasks] = useState(null);
+  const [friendsTasks, setFriendsTasks] = useState(null);
   const user = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
     const fetchTodayTasks = async () => {
       try {
-        const response = await axios.get(`https://00c7-2409-40f4-26-51a1-9cf4-1f2f-73e3-254.ngrok-free.app/assignment/todaytasks/questions/${user?.StudentID}`);
+        const response = await axios.get(`https://83c6-2409-40f4-3d-f853-f96f-f8c7-76c6-21ba.ngrok-free.app/assignment/todaytasks/questions/${user?.StudentID}`);
         if (!response) {
           throw new Error('Network response was not ok');
         }
@@ -26,7 +27,7 @@ export default function schedule() {
 
     const fetchFriendsTasks = async () => {
       try {
-        const response = await axios.get(`https://00c7-2409-40f4-26-51a1-9cf4-1f2f-73e3-254.ngrok-free.app/students/friends/${user?.StudentID}`);
+        const response = await axios.get(`https://83c6-2409-40f4-3d-f853-f96f-f8c7-76c6-21ba.ngrok-free.app/students/friends/${user?.StudentID}`);
         if (!response) {
           throw new Error('Network response was not ok');
         }
@@ -44,6 +45,7 @@ export default function schedule() {
 
 
   return (
+    todayTasks && friendsTasks ? (
     <ScrollView>
    <View style={styles.body}>
     <View>
@@ -60,6 +62,9 @@ export default function schedule() {
     </View>
     </View>
     </ScrollView>
+    ) : (
+      <Loading/>
+    )
   )
 }
 

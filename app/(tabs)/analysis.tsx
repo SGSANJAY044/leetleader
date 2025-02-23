@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import {ScrollView, StyleSheet, Text,Platform, View } from 'react-native';
-
+import Loading from '@/components/Pages/loading';
 interface Submissions {
   title: string;
   titleSlug: string;
@@ -11,11 +11,11 @@ interface Submissions {
 }
 
 export default function analysis() {
-  const [submissions,setSubmissions]=useState(useState<Submissions[] | null>(null))
+  const [submissions,setSubmissions]=useState(null)
   useEffect(() => {
     const fetchSubmissions = async () => {
       try {
-        const response = await axios.get('https://00c7-2409-40f4-26-51a1-9cf4-1f2f-73e3-254.ngrok-free.app/students/submissions/fjzzq2002'); 
+        const response = await axios.get('https://83c6-2409-40f4-3d-f853-f96f-f8c7-76c6-21ba.ngrok-free.app/students/submissions/fjzzq2002'); 
         if (!response) {
           throw new Error('Network response was not ok');
         }
@@ -28,6 +28,7 @@ export default function analysis() {
   }, []);
   
   return (
+    submissions ?
     <View style={styles.body}>
       <View style={{height:"45%"}}></View>
       <View style={styles.submission}>
@@ -56,6 +57,7 @@ export default function analysis() {
         </ScrollView>
       </View>
     </View>
+    : <Loading/>
   )
 }
 

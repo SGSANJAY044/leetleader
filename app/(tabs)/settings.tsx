@@ -4,6 +4,8 @@ import { MaterialIcons,Feather,FontAwesome6, Ionicons } from '@expo/vector-icons
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import Loading from '@/components/Pages/loading';
+import { useFonts } from 'expo-font';
 export default function settings() {
   const user = useSelector((state: RootState) => state.user.user);
   const [isEditing, setIsEditing] = useState(false);
@@ -13,6 +15,14 @@ export default function settings() {
   const [className, setClassName] = useState(user?.ClassID);
   const [phone, setPhone] = useState(user?.Phone);
   const [mail, setMail] = useState(user?.Mail);
+  const [fontsLoaded] = useFonts({
+    MaterialIcons: require('@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/MaterialIcons.ttf'),
+    Feather: require('@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Feather.ttf'),
+    Ionicons: require('@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Ionicons.ttf'),
+    FontAwesome6_Regular: require('@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/FontAwesome6_Regular.ttf'),
+    FontAwesome6_Solid: require('@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/FontAwesome6_Solid.ttf'),
+    FontAwesome6_Brands: require('@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/FontAwesome6_Brands.ttf'),
+  });
 
   const allowedValues = ['CSE', 'IT', 'ECE', 'EEE']; // Add your department codes
   const departmentMap: { [key: string]: number } = {
@@ -32,7 +42,7 @@ export default function settings() {
   const handleEdit = async () => {
     if (isEditing) {
       try {
-        const response = await axios.put(`https://00c7-2409-40f4-26-51a1-9cf4-1f2f-73e3-254.ngrok-free.app/students/${mail}`, {
+        const response = await axios.put(`https://83c6-2409-40f4-3d-f853-f96f-f8c7-76c6-21ba.ngrok-free.app/students/${mail}`, {
           name,
           roll: rollNo,
           department_id: 2,
@@ -64,6 +74,7 @@ export default function settings() {
   };
   
   return (
+    user && fontsLoaded ?
     <View style={styles.body}>
       <TouchableOpacity style={styles.editButton} onPress={handleEdit}>
       {isEditing ? <Feather name="check" size={24} color="white" /> : <Feather name="edit-2" size={24} color="white" />}
@@ -146,6 +157,7 @@ export default function settings() {
         </View>
       </View>
     </View>
+    : <Loading/>
   )
 }
 

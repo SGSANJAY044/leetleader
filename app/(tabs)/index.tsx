@@ -7,6 +7,7 @@ import { Shadow } from 'react-native-shadow-2';
 import { router } from 'expo-router';
 import { useDispatch } from 'react-redux';
 import { setUser } from '@/redux/slices/userSlice';
+import Loading from '@/components/Pages/loading';
 interface StudentData {
   StudentID: number;
   Streak: number;
@@ -30,7 +31,7 @@ export default function HomeScreen() {
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
-        const response = await axios.get('https://00c7-2409-40f4-26-51a1-9cf4-1f2f-73e3-254.ngrok-free.app/students/21ADR044');
+        const response = await axios.get('https://83c6-2409-40f4-3d-f853-f96f-f8c7-76c6-21ba.ngrok-free.app/students/21ADR044');
         if (!response) {
           throw new Error('Network response was not ok');
         }
@@ -43,7 +44,7 @@ export default function HomeScreen() {
 
     const fetchClassStudentsData = async () => {
       try {
-        const response = await axios.get('https://00c7-2409-40f4-26-51a1-9cf4-1f2f-73e3-254.ngrok-free.app/students/class/101');
+        const response = await axios.get('https://83c6-2409-40f4-3d-f853-f96f-f8c7-76c6-21ba.ngrok-free.app/students/class/101');
         
         if (!response) {
           throw new Error('Network response was not ok');
@@ -57,32 +58,30 @@ export default function HomeScreen() {
     fetchStudentData();
   }, []);
   return (
-    <View style={styles.body}>
-      <Card name={studentData?.Name} roll={studentData?.Roll} easy={studentData?.SolvedEasy} medium={studentData?.SolvedMedium} hard={studentData?.SolvedHard}/>
-      <View
-      style={{
-      borderBottomColor: 'grays',
-        borderBottomWidth: StyleSheet.hairlineWidth,
-      }}          
-      />
-      <View>
-
-      <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginBottom:30}}>
-        <Text style={{fontSize:25,fontWeight:600,color:'#EBA340'}}>LEADER BOARD</Text>
-        <Shadow offset={[0, 8]}  distance={24} startColor="rgba(149, 157, 165, 0.05)" stretch>
-        <View style={styles.sort}>
-          <Text style={{fontSize:20,justifyContent:'center',color:'gray'}}>sort</Text>
-          <View style={styles.sortButton}><Image source={require('@/assets/images/sort.png')} style={{height:20,width:20}}/></View>
+    studentData && classStudentsData ? (
+      <View style={styles.body}>
+        <Card name={studentData?.Name} roll={studentData?.Roll} easy={studentData?.SolvedEasy} medium={studentData?.SolvedMedium} hard={studentData?.SolvedHard}/>
+        <View style={{ borderBottomColor: 'grays', borderBottomWidth: StyleSheet.hairlineWidth }}/>
+        <View>
+          <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginBottom:30}}>
+            <Text style={{fontSize:25,fontWeight:600,color:'#EBA340'}}>LEADER BOARD</Text>
+            <Shadow offset={[0, 8]} distance={24} startColor="rgba(149, 157, 165, 0.05)" stretch>
+              <View style={styles.sort}>
+                <Text style={{fontSize:20,justifyContent:'center',color:'gray'}}>sort</Text>
+                <View style={styles.sortButton}><Image source={require('@/assets/images/sort.png')} style={{height:20,width:20}}/></View>
+              </View>
+            </Shadow>
+          </View>
+          <ScrollView style={{height: '60%',overflowY: 'scroll'}} showsVerticalScrollIndicator={false}>
+            <View style={styles.leetBoard}>
+              {classStudentsData?.map((data,index)=><LeetBoard rank={index+1} name={data.Name} roll={data.Roll} total={(6-index)*233} key={index}/>)}
+            </View>
+          </ScrollView>
         </View>
-        </Shadow>
       </View>
-      <ScrollView style={{height: '60%',overflowY: 'scroll',}} showsVerticalScrollIndicator={false}  >
-      <View style={styles.leetBoard}>
-      {classStudentsData?.map((data,index)=><LeetBoard rank={index+1} name={data.Name} roll={data.Roll} total={(6-index)*233} key={index}/>)}
-      </View>
-      </ScrollView>
-      </View>
-    </View>
+    ) : (
+      <Loading/>
+    )
   );
 }
 
