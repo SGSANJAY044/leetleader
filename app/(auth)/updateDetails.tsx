@@ -6,15 +6,17 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import Loading from '@/components/Pages/loading';
 import { useFonts } from 'expo-font';
+import { router } from 'expo-router';
+import { setAuth } from '@/redux/slices/authSlice';
+import { useDispatch } from 'react-redux';
 export default function settings() {
-  const user = useSelector((state: RootState) => state.user.user);
-  const [isEditing, setIsEditing] = useState(false);
-  const [name, setName] = useState(user?.Name);
-  const [rollNo, setRollNo] = useState(user?.Roll);
-  const [department, setDepartment] = useState(user?.DepartmentID);
-  const [className, setClassName] = useState(user?.ClassID);
-  const [phone, setPhone] = useState(user?.Phone);
-  const [mail, setMail] = useState(user?.Mail);
+  const dispatch = useDispatch();
+  const [name, setName] = useState('');
+  const [rollNo, setRollNo] = useState('');
+  const [department, setDepartment] = useState('');
+  const [className, setClassName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [mail, setMail] = useState('');
   const [fontsLoaded] = useFonts({
     MaterialIcons: require('@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/MaterialIcons.ttf'),
     Feather: require('@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Feather.ttf'),
@@ -40,25 +42,21 @@ export default function settings() {
   };
 
   const handleEdit = async () => {
-    if (isEditing) {
       try {
         const response = await axios.put(`https://709d-2409-40f4-a3-1ce4-8890-f227-c8ec-66e9.ngrok-free.app/students/${mail}`, {
           name,
           roll: rollNo,
-          department_id: 2,
-          class_id: 101,
+          department_id: department,
+          class_id: className,
           phone
         });
-
         if (response.status === 200) {
-          setIsEditing(false);
+            dispatch(setAuth(true));
+            router.replace('/(tabs)');
         }
       } catch (error) {
         console.error('Error updating student data:', error);
       }
-    } else {
-      setIsEditing(true);
-    }
   };
 
   const handleDepartmentChange = (value: string) => {
@@ -74,11 +72,9 @@ export default function settings() {
   };
   
   return (
-    user && fontsLoaded ?
+    fontsLoaded ?
     <View style={styles.body}>
-      <TouchableOpacity style={styles.editButton} onPress={handleEdit}>
-      {isEditing ? <Feather name="check" size={24} color="white" /> : <Feather name="edit-2" size={24} color="white" />}
-      </TouchableOpacity>
+        
       <View style={styles.profile}>
         <Image style={styles.logo} source={require('@/assets/images/Profile.png')} />
       </View>
@@ -86,8 +82,6 @@ export default function settings() {
         <View style={styles.inputContainer}>
           <MaterialIcons name="person" size={24} color="#EBA340" />
           <TextInput
-            editable={isEditing}
-            selectTextOnFocus={isEditing} 
             style={styles.input}
             placeholder="Name"
             value={name}
@@ -98,8 +92,6 @@ export default function settings() {
         <View style={styles.inputContainer}>
           <FontAwesome6 name="id-card" size={24} color="#EBA340" />
           <TextInput
-            editable={isEditing}
-            selectTextOnFocus={isEditing} 
             style={styles.input}
             placeholder="Roll No"
             value={rollNo}
@@ -109,8 +101,6 @@ export default function settings() {
         <View style={styles.inputContainer}>
           <FontAwesome6 name="building-circle-check" size={24} color="#EBA340" />
           <TextInput
-            editable={isEditing}
-            selectTextOnFocus={isEditing} 
             style={styles.input}
             placeholder="Department"
             value={Object.keys(departmentMap).find(key => departmentMap[key] === department) || ''}
@@ -121,8 +111,6 @@ export default function settings() {
         <View style={styles.inputContainer}>
           <Ionicons name="school" size={24} color="#EBA340" />
           <TextInput
-            editable={isEditing}
-            selectTextOnFocus={isEditing} 
             style={styles.input}
             placeholder="Class"
             value={Object.keys(classMap).find(key => classMap[key] === className) || ''}
@@ -133,8 +121,6 @@ export default function settings() {
         <View style={styles.inputContainer}>
           <MaterialIcons name="phone" size={24} color="#EBA340" />
           <TextInput
-            editable={isEditing}
-            selectTextOnFocus={isEditing} 
             style={styles.input}
             placeholder="Phone"
             value={phone}
@@ -145,8 +131,6 @@ export default function settings() {
         <View style={styles.inputContainer}>
           <MaterialIcons name="email" size={24} color="#EBA340" />
           <TextInput
-            editable={false}
-            selectTextOnFocus={false} 
             style={styles.input}
             placeholder="Email"
             value={mail}
@@ -156,6 +140,10 @@ export default function settings() {
           />
         </View>
       </View>
+      <TouchableOpacity style={styles.editButton} onPress={handleEdit}>
+        <Text style={styles.editText}>Update</Text>
+      </TouchableOpacity>
+  
     </View>
     : <Loading/>
   )
@@ -163,7 +151,7 @@ export default function settings() {
 
 const styles = StyleSheet.create({
   body: {
-    marginTop: 20,
+    marginTop: 10,
     padding: 20,
     gap: 40,
     height: '100%'
@@ -180,7 +168,7 @@ const styles = StyleSheet.create({
   },
   details: {
     width: '100%',
-    height: '80%',
+    height: '60%',
   },
   inputContainer: {
     flexDirection: 'row',
@@ -193,13 +181,15 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     marginLeft: 10,
-  },
+    },
   editButton: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
+    backgroundColor: '#EBA340',
     padding: 10,
-    borderRadius: 15,
-    backgroundColor: '#EBA340'
-  }
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  editText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
 })

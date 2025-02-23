@@ -31,7 +31,7 @@ export default function HomeScreen() {
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
-        const response = await axios.get('https://83c6-2409-40f4-3d-f853-f96f-f8c7-76c6-21ba.ngrok-free.app/students/21ADR044');
+        const response = await axios.get('https://709d-2409-40f4-a3-1ce4-8890-f227-c8ec-66e9.ngrok-free.app/students/21ADR044');
         if (!response) {
           throw new Error('Network response was not ok');
         }
@@ -44,7 +44,7 @@ export default function HomeScreen() {
 
     const fetchClassStudentsData = async () => {
       try {
-        const response = await axios.get('https://83c6-2409-40f4-3d-f853-f96f-f8c7-76c6-21ba.ngrok-free.app/students/class/101');
+        const response = await axios.get('https://709d-2409-40f4-a3-1ce4-8890-f227-c8ec-66e9.ngrok-free.app/students/class/101');
         
         if (!response) {
           throw new Error('Network response was not ok');

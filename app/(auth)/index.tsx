@@ -12,7 +12,7 @@ export default function Login() {
 
   const handleLogin = async() => {
     try {
-      const responce =await axios.post('https://83c6-2409-40f4-3d-f853-f96f-f8c7-76c6-21ba.ngrok-free.app/auth/student/login',{mail,password});
+      const responce =await axios.post('https://709d-2409-40f4-a3-1ce4-8890-f227-c8ec-66e9.ngrok-free.app/auth/student/login',{mail,password});
       
     } catch (error) {
       Toast.show({
