@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { StyleSheet, Text,Image, View, TextInput, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
 import axios from 'axios';
-
+import { useDispatch } from 'react-redux';
+import { setAuth } from '@/redux/slices/authSlice';
 export default function Signup() {
   const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
-
+  const dispatch = useDispatch();
   const handleSignup = async() => {
     try {
       await axios.post('https://83c6-2409-40f4-3d-f853-f96f-f8c7-76c6-21ba.ngrok-free.app/auth/student/signup',{mail,password});
@@ -15,6 +16,7 @@ export default function Signup() {
       return false;
     }
     // On successful signup:
+    dispatch(setAuth(true));
     router.replace('/(tabs)');
   };
 

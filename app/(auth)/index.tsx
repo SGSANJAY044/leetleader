@@ -3,9 +3,12 @@ import { StyleSheet, Text, View,Image, TextInput, TouchableOpacity } from 'react
 import { router } from 'expo-router';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
+import { useDispatch } from 'react-redux';
+import { setAuth } from '@/redux/slices/authSlice';
 export default function Login() {
   const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
 
   const handleLogin = async() => {
     try {
@@ -21,6 +24,7 @@ export default function Login() {
       return false;
     }
     // On successful login:
+    dispatch(setAuth(true));
     router.replace('/(tabs)');
   };
 
