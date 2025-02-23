@@ -80,7 +80,7 @@ export default function settings() {
       {isEditing ? <Feather name="check" size={24} color="white" /> : <Feather name="edit-2" size={24} color="white" />}
       </TouchableOpacity>
       <View style={styles.profile}>
-        <Image style={styles.logo} source={require('@/assets/images/Profile.png')} />
+        <Image style={styles.logo} source={require('@/assets/images/Profile.webp')} />
       </View>
       <View style={styles.details}>
         <View style={styles.inputContainer}>
@@ -169,8 +169,9 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   logo: {
-    width: 100,
-    height: 100
+    width: 150,
+    height: 150,
+    borderRadius: 50
   },
   profile: {
     width: '100%',
